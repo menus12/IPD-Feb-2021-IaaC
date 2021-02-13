@@ -31,5 +31,5 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Get labs
         run: > 
-          curl -k -X GET "$VIRL2_URL/api/v0/labs" 
-          -H  "accept: application/json" -H  "Authorization: Bearer $ACCESS_TOKEN"
+         curl -k -X GET "$VIRL2_URL/api/v0/labs" 
+         -H  "accept: application/json" -H  "Authorization: Bearer $ACCESS_TOKEN"
