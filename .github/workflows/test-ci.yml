@@ -24,12 +24,12 @@ jobs:
       # Runs a single command using the runners shell
       - name: Get CML2 API access token and set it to environment variable
         run: > 
-          export ACCESS_TOKEN=$(curl -k -X POST "https://10.0.191.13/api/v0/authenticate" 
+          export ACCESS_TOKEN=$(curl -k -X POST "$VIRL2_URL/api/v0/authenticate" 
           -H  "accept: application/json" -H  "Content-Type: application/json" 
-          -d "{\"username\":\"admin\",\"password\":\"P@ssw0rd\"}" | tr -d \")
+          -d "{\"username\":\"$VIRL2_USER\",\"password\":\"$VIRL2_PASS\"}" | tr -d \")
 
       # Runs a set of commands using the runners shell
-      - name: Check token
-        run: |
-          echo $ACCESS_TOKEN
-          echo $VIRL2_URL
+      - name: Get labs
+        run: > 
+          curl -X GET "$VIRL2_URL/api/v0/labs" 
+          -H  "accept: application/json" -H  "Authorization: Bearer $ACCESS_TOKEN"
