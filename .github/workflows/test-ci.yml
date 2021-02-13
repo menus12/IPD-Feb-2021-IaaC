@@ -21,7 +21,7 @@ jobs:
         run: env
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Print env secrets
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo $VIRL2_URL
+          echo $VIRL2_USER
