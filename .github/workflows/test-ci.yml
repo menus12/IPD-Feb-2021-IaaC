@@ -27,7 +27,7 @@ jobs:
           -d "{\"username\":\"$VIRL2_USER\",\"password\":\"$VIRL2_PASS\"}" | tr -d \")
 
       - name: Check env
-        run: env | grep ACCESS
+        run: env
 
       - name: Get labs
         run: > 
