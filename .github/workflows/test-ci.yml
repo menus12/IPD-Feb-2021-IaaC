@@ -17,18 +17,18 @@ jobs:
     environment: CML2-Controller
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    steps:      
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
+      
       - name: Get CML2 API access token and set it to environment variable
         run: > 
           export ACCESS_TOKEN=$(curl -k -X POST "$VIRL2_URL/api/v0/authenticate" 
           -H  "accept: application/json" -H  "Content-Type: application/json" 
           -d "{\"username\":\"$VIRL2_USER\",\"password\":\"$VIRL2_PASS\"}" | tr -d \")
 
-      # Runs a set of commands using the runners shell
+      - name: Check env
+        run: env | grep ACCESS
+
       - name: Get labs
         run: > 
          curl -k -X GET "$VIRL2_URL/api/v0/labs" 
