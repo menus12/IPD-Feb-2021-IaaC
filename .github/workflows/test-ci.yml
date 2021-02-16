@@ -10,6 +10,9 @@ env:
   VIRL2_URL: ${{ secrets.VIRL2_URL }}
   VIRL2_USER: ${{ secrets.VIRL2_USER }}
   VIRL2_PASS: ${{ secrets.VIRL2_PASS }}
+  VIRL2_NODES_USER: ${{ secrets.VIRL2_NODES_USER }}
+  VIRL2_NODES_PASS: ${{ secrets.VIRL2_NODES_PASS }}
+  VIRL2_NODES_BECOME: ${{ secrets.VIRL2_NODES_BECOME }}
 
 jobs:
   test:
@@ -20,16 +23,15 @@ jobs:
     steps:      
       - uses: actions/checkout@v2
       
-      - name: Get CML2 API access token and set it to environment variable
-        run: > 
-          export ACCESS_TOKEN=$(curl -k -X POST "$VIRL2_URL/api/v0/authenticate" 
-          -H  "accept: application/json" -H  "Content-Type: application/json" 
-          -d "{\"username\":\"$VIRL2_USER\",\"password\":\"$VIRL2_PASS\"}" | tr -d \")
+      - name: Set up a python virtual environment
+        run: | 
+          python3 -m venv iaac-venv
+          source iaac-venv/bin/activate
+          pip3 install virl2_client
+          pip3 install pyats[full]
+          pip install paramiko
+          pip3 install nested-lookup
+          ansible-galaxy collection install cisco.ios
 
       - name: Check env
         run: env
-
-      - name: Get labs
-        run: > 
-         curl -k -X GET "$VIRL2_URL/api/v0/labs" 
-         -H  "accept: application/json" -H  "Authorization: Bearer $ACCESS_TOKEN"
