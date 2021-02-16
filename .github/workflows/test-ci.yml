@@ -24,6 +24,7 @@ jobs:
       
       - name: Set up a python virtual environment
         run: | 
+          sudo apt-get install python3-setuptools
           pip3 install virl2_client
           pip3 install pyats[full]
           pip install paramiko
