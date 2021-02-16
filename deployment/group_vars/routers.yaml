@@ -1,0 +1,5 @@
+####  CONNECTION SPECIFIC ####
+ansible_port: 2222
+ansible_network_os: ios
+
+####  CONFIGURATION SPECIFIC ####

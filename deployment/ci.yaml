@@ -1,0 +1,14 @@
+---
+- name: Basic configuration
+  hosts: R1
+  gather_facts: false
+  tasks:
+
+    - name: Set banner
+      cisco.ios.ios_banner:
+        banner: motd
+        text: |
+          THIS IS INFRASTRUCTURE AS A CODE DEMO
+          FOR IPD WEEK FEB 2021
+          !UNATHORITHED ACCESS DISABLED!
+        state: present

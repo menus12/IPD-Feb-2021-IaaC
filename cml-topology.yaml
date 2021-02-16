@@ -18,149 +18,38 @@ nodes:
         label: port
         type: physical
   - id: n1
-    label: iosv-0
+    label: R1
     node_definition: iosv
     x: -400
     y: -50
     configuration: |-
-      Building configuration...
-
-      Current configuration : 2956 bytes
+      hostname initial_hostname
+      ip domain-name domain.name
+      no boot network
+      no service config
+      username ci-user priv 15 secret JHjdYNHbnvF5aMG8
+      vrf definition Mgmt-intf
+       !
+       address-family ipv4
+       exit-address-family
       !
-      ! Last configuration change at 14:28:01 UTC Thu Feb 11 2021
-      !
-      version 15.9
-      service timestamps debug datetime msec
-      service timestamps log datetime msec
-      no service password-encryption
-      !
-      hostname Router
-      !
-      boot-start-marker
-      boot-end-marker
-      !
-      !
-      no logging console
-      !
-      no aaa new-model
-      !
-      !
-      !
-      mmi polling-interval 60
-      no mmi auto-configure
-      no mmi pvc
-      mmi snmp-timeout 180
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      ip cef
-      no ipv6 cef
-      !
-      multilink bundle-name authenticated
-      !
-      !
-      !
-      !
-      !
-      redundancy
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
-      !
+      ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.0.191.254
       interface GigabitEthernet0/0
-       no ip address
-       duplex auto
-       speed auto
+       no switchport
+       vrf forwarding Mgmt-intf
+       ip address 10.0.191.101 255.255.255.0
        media-type rj45
+       negotiation auto
       !
-      interface GigabitEthernet0/1
-       no ip address
-       shutdown
-       duplex auto
-       speed auto
-       media-type rj45
+      ip ssh port 2222 rotary 1
+      line vty 10 15
+       rotary 1
+       login local
+       privilege level 15
+       logging synchronous
+       transport input ssh
       !
-      interface GigabitEthernet0/2
-       no ip address
-       shutdown
-       duplex auto
-       speed auto
-       media-type rj45
-      !
-      interface GigabitEthernet0/3
-       no ip address
-       shutdown
-       duplex auto
-       speed auto
-       media-type rj45
-      !
-      ip forward-protocol nd
-      !
-      !
-      no ip http server
-      no ip http secure-server
-      !
-      ipv6 ioam timestamp
-      !
-      !
-      !
-      control-plane
-      !
-      banner exec ^C
-      **************************************************************************
-      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-      * education. IOSv is provided as-is and is not supported by Cisco's      *
-      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
-      * of the IOSv Software or Documentation to any third party for any       *
-      * purposes is expressly prohibited except as otherwise authorized by     *
-      * Cisco in writing.                                                      *
-      **************************************************************************^C
-      banner incoming ^C
-      **************************************************************************
-      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-      * education. IOSv is provided as-is and is not supported by Cisco's      *
-      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
-      * of the IOSv Software or Documentation to any third party for any       *
-      * purposes is expressly prohibited except as otherwise authorized by     *
-      * Cisco in writing.                                                      *
-      **************************************************************************^C
-      banner login ^C
-      **************************************************************************
-      * IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-      * education. IOSv is provided as-is and is not supported by Cisco's      *
-      * Technical Advisory Center. Any use or disclosure, in whole or in part, *
-      * of the IOSv Software or Documentation to any third party for any       *
-      * purposes is expressly prohibited except as otherwise authorized by     *
-      * Cisco in writing.                                                      *
-      **************************************************************************^C
-      !
-      line con 0
-       exec-timeout 0 0
-      line aux 0
-      line vty 0 4
-       login
-       transport input none
-      !
-      no scheduler allocate
+      crypto key gen rsa gen mod 1024
       !
       end
     image_definition: iosv-159-3
