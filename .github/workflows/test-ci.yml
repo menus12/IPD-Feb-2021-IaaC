@@ -26,6 +26,8 @@ jobs:
         run: | 
           python3 -m pip install --upgrade pip
           sudo apt-get install python3-setuptools
+          python3 -m venv iaac-venv
+          source iaac-venv/bin/activate
           pip3 install wheel
           pip3 install virl2_client          
           pip3 install paramiko
@@ -36,6 +38,7 @@ jobs:
 
       - name: Check env
         run: |
+          source iaac-venv/bin/activate
           env
           ansible --version
           pyats version check
