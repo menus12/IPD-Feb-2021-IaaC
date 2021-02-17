@@ -40,7 +40,6 @@ jobs:
         run: | 
           python3 -m venv iaac-venv
           source iaac-venv/bin/activate
-#          sudo apt-get install sshpass -y
           python3 -m pip install --upgrade pip
           sudo apt-get install python3-setuptools
           pip3 install wheel
