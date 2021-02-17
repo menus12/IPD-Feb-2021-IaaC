@@ -30,60 +30,61 @@ jobs:
     steps:      
       - uses: actions/checkout@v2
   
-      - name: test proxy
+#      - name: test proxy
+#        run: |
+#          export ANSIBLE_PROXY_COMMAND="-o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
+#          echo $ANSIBLE_PROXY_COMMAND > ap.txt
+#          cat ap.txt
+
+      - name: Set up a python virtual environment
+        run: | 
+          python3 -m venv iaac-venv
+          source iaac-venv/bin/activate
+          python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
+          pip3 install wheel
+          pip3 install virl2_client          
+          pip3 install paramiko
+          pip3 install nested-lookup
+          pip3 install ansible
+          ansible-galaxy collection install cisco.ios
+          pip3 install pyats[full]
+          pwd
+
+      - name: Check virtual environment
         run: |
+          source iaac-venv/bin/activate
+          env | grep VIRL2
+          env | grep ANSIBLE
+          ansible --version
+          pyats version check
+          pwd
+          
+      - name: Start CML simulation
+        run: |
+          pwd
+          source iaac-venv/bin/activate
+          python3 cml_wrapper.py
+          
+      - name: Deploy ansible playbook
+        run: |
+          pwd
+          source iaac-venv/bin/activate
           export ANSIBLE_PROXY_COMMAND="-o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
-          echo $ANSIBLE_PROXY_COMMAND > ap.txt
-          cat ap.txt
-
-#      - name: Set up a python virtual environment
-#        run: | 
-#          python3 -m venv iaac-venv
-#          source iaac-venv/bin/activate
-#          python3 -m pip install --upgrade pip
-#          sudo apt-get install python3-setuptools
-#          pip3 install wheel
-#          pip3 install virl2_client          
-#          pip3 install paramiko
-#          pip3 install nested-lookup
-#          pip3 install ansible
-#          ansible-galaxy collection install cisco.ios
-#          pip3 install pyats[full]
-#          pwd
-
-#      - name: Check virtual environment
-#        run: |
-#          source iaac-venv/bin/activate
-#          env | grep VIRL2
-#          env | grep ANSIBLE
-#          ansible --version
-#         pyats version check
-#          pwd
-          
-#      - name: Start CML simulation
-#        run: |
-#          pwd
-#          source iaac-venv/bin/activate
-#          python3 cml_wrapper.py
-          
-#      - name: Deploy ansible playbook
-#        run: |
-#          pwd
-#          source iaac-venv/bin/activate
-#          cd ./deployment
-#          ansible-playbook ci.yaml
-#        #working-directory: deployment
+          cd ./deployment
+          ansible-playbook ci.yaml
+        #working-directory: deployment
     
-#      - name: Run pyATS unit-tests 
-#        run: |
-#          pwd
-#          source iaac-venv/bin/activate
-#          cd ./testing
-#          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
-#        #working-directory: testing
+      - name: Run pyATS unit-tests 
+        run: |
+          pwd
+          source iaac-venv/bin/activate
+          cd ./testing
+          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
+        #working-directory: testing
       
-#      - name: Stop CML simulation
-#        run: |
-#          pwd
-#          source iaac-venv/bin/activate
-#          python3 cml_wrapper.py --action destroy
+      - name: Stop CML simulation
+        run: |
+          pwd
+          source iaac-venv/bin/activate
+          python3 cml_wrapper.py --action destroy
