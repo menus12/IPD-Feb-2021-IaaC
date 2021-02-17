@@ -44,10 +44,32 @@ jobs:
           ansible-galaxy collection install cisco.ios
           pip3 install pyats[full]
 
-      - name: Check env
+      - name: Check virtual environment
         run: |
           source iaac-venv/bin/activate
           env | grep VIRL2
           env | grep ANSIBLE
           ansible --version
           pyats version check
+          
+      - name: Start CML simulation
+        run: |
+          source iaac-venv/bin/activate
+          python3 $RUNNER_WORKSPACE/cml_wrapper.py
+          
+      - name: Deploy ansible playbook
+        run: |
+          source iaac-venv/bin/activate
+          cd $RUNNER_WORKSPACE/deployment
+          ansible-playbook ci.yaml
+    
+      - name: Run pyATS unit-tests 
+        run: |
+          source iaac-venv/bin/activate
+          cd $RUNNER_WORKSPACE/testing
+          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
+      
+      - name: Stop CML simulation
+        run: |
+          source iaac-venv/bin/activate
+          python3 $RUNNER_WORKSPACE/cml_wrapper.py --action destroy
