@@ -4,11 +4,20 @@
   gather_facts: false
   tasks:
 
+    - name: Wait for system to become reachable over SSH
+      delegate_to: CML
+      wait_for:
+        timeout: 180
+        host: "{{ ansible_host }}"
+        port: "{{ ansible_port }}"
+
+
     - name: Set banner
       cisco.ios.ios_banner:
         banner: motd
         text: |
           THIS IS INFRASTRUCTURE AS A CODE DEMO
           FOR IPD WEEK FEB 2021
-          !UNATHORITHED ACCESS DISABLED!
+          !1!1UNAUTHORIZED ACCESS NOT ALLOWED!1!1
         state: present
+

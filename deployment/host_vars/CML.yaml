@@ -1,0 +1,8 @@
+####  CONNECTION SPECIFIC ####
+ansible_connection: ssh
+ansible_become: no
+ansible_network_os: linux
+
+ansible_user: "{{ lookup('env','VIRL2_CONTROLLER_USER') }}"
+ansible_ssh_pass: "{{ lookup('env','VIRL2_CONTROLLER_PASS') }}"
+ansible_port: 1122

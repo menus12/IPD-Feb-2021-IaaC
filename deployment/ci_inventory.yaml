@@ -6,3 +6,7 @@ all:
           ansible_host: 10.0.191.101
         R2:
           ansible_host: 10.0.191.102
+    controllers:
+      hosts:
+        CML:
+          ansible_host: "{{ lookup('env','VIRL2_CONTROLLER_HOST') }}"

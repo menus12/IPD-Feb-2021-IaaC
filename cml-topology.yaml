@@ -23,7 +23,7 @@ nodes:
     x: -400
     y: -50
     configuration: |-
-      hostname initial_hostname
+      hostname R1
       ip domain-name domain.name
       no boot network
       no service config
@@ -38,8 +38,6 @@ nodes:
        no switchport
        vrf forwarding Mgmt-intf
        ip address 10.0.191.101 255.255.255.0
-       media-type rj45
-       negotiation auto
       !
       ip ssh port 2222 rotary 1
       line vty 10 15
