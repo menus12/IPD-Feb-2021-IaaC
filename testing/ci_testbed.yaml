@@ -1,0 +1,41 @@
+testbed:
+  name: ci_testbed
+  credentials:
+    default:
+      username: '%ENV{VIRL2_NODES_USER}'
+      password: '%ENV{VIRL2_NODES_PASS}'
+      enable_password: '%ENV{VIRL2_NODES_BECOME}'
+
+devices:
+  cml:
+    os: linux
+    type: linux
+    credentials:
+      default:
+        username: '%ENV{VIRL2_CONTROLLER_USER}'
+        password: '%ENV{VIRL2_CONTROLLER_PASS}'
+    connections:
+      cli:
+        protocol: ssh
+        ip: '%ENV{VIRL2_CONTROLLER_HOST}'
+        port: '%ENV{VIRL2_CONTROLLER_PORT}'
+  R1:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.101
+        port: 2222
+        proxy: cml
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
+
+
+topology:
+  R1:
+    interfaces:
+      GigabitEthernet0/0:
+        link: l0
+        type: ethernet

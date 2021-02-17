@@ -1,0 +1,10 @@
+testcases:
+  Basic_config:
+    name: Basic configuration
+    tests:
+      banner:
+        - desc: Check MOTD banner
+          device: R1
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+    cleanup_steps:

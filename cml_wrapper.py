@@ -53,7 +53,7 @@ if args.action == 'destroy':
     lab_id = f.read()
     f.close()
     
-    print('Starting ' + lab_id)
+    print('Lab ID is ' + lab_id)
     lab = client_library.join_existing_lab(lab_id)
     
     print('Stoping lab' + lab_id)
