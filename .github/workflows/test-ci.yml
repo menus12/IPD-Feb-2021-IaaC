@@ -20,7 +20,7 @@ env:
   VIRL2_CONTROLLER_HOST: ${{ secrets.VIRL2_CONTROLLER_HOST }}
   VIRL2_CONTROLLER_PORT: ${{ secrets.VIRL2_CONTROLLER_PORT }}
   
-  ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
+  #ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
 
 jobs:
   ci:
@@ -32,6 +32,7 @@ jobs:
   
       - name: test proxy
         run: |
+          export ANSIBLE_PROXY_COMMAND="-o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
           echo $ANSIBLE_PROXY_COMMAND > ap.txt
           cat ap.txt
 
