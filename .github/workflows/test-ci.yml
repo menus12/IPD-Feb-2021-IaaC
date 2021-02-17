@@ -10,9 +10,17 @@ env:
   VIRL2_URL: ${{ secrets.VIRL2_URL }}
   VIRL2_USER: ${{ secrets.VIRL2_USER }}
   VIRL2_PASS: ${{ secrets.VIRL2_PASS }}
+  
   VIRL2_NODES_USER: ${{ secrets.VIRL2_NODES_USER }}
   VIRL2_NODES_PASS: ${{ secrets.VIRL2_NODES_PASS }}
   VIRL2_NODES_BECOME: ${{ secrets.VIRL2_NODES_BECOME }}
+  
+  VIRL2_CONTROLLER_USER: ${{ secrets.VIRL2_CONTROLLER_USER }}
+  VIRL2_CONTROLLER_PASS: ${{ secrets.VIRL2_CONTROLLER_PASS }}
+  VIRL2_CONTROLLER_HOST: ${{ secrets.VIRL2_CONTROLLER_HOST }}
+  VIRL2_CONTROLLER_PORT: ${{ secrets.VIRL2_CONTROLLER_PORT }}
+  
+  ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
 
 jobs:
   test:
@@ -39,6 +47,7 @@ jobs:
       - name: Check env
         run: |
           source iaac-venv/bin/activate
-          env
+          env | grep VIRL2
+          env | grep ANSIBLE
           ansible --version
           pyats version check
