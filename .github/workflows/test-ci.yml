@@ -48,7 +48,7 @@ jobs:
           pip3 install nested-lookup
           pip3 install ansible
           ansible-galaxy collection install cisco.ios
-#          pip3 install pyats[full]
+          pip3 install pyats[full]
 
 #      - name: Check virtual environment
 #        run: |
@@ -70,14 +70,13 @@ jobs:
           export ANSIBLE_PROXY_COMMAND="-o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
           cd ./deployment
           ansible-playbook ci.yaml
-        #working-directory: deployment
     
-#      - name: Run pyATS unit-tests 
-#        run: |
-#          source iaac-venv/bin/activate
-#          cd ./testing
-#          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
-#        #working-directory: testing
+      - name: Run pyATS unit-tests 
+        run: |
+          source iaac-venv/bin/activate
+          cd ./testing
+          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
+        #working-directory: testing
       
       - name: Stop CML simulation
         run: |
