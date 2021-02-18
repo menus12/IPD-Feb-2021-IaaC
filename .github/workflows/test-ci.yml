@@ -59,10 +59,10 @@ jobs:
 #          pyats version check
 #          pwd
           
-#      - name: Start CML simulation
-#        run: |
-#          source iaac-venv/bin/activate
-#          python3 cml_wrapper.py
+      - name: Start CML simulation
+        run: |
+          source iaac-venv/bin/activate
+          python3 cml_wrapper.py
           
       - name: Deploy ansible playbook
         run: |
