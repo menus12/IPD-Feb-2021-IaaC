@@ -26,6 +26,7 @@ devices:
         ip: 10.0.191.101
         port: 2222
         proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
       defaults:
         class: unicon.Unicon
     os: ios
