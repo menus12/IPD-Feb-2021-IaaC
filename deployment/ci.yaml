@@ -22,6 +22,7 @@
         configured_password: "{{ lookup('env','VIRL2_NODES_PASS') }}"
         password_type: secret
         privilege: 15
+      no_log: true
 
     - name: Configure domain name and nameservers
       cisco.ios.ios_system:
