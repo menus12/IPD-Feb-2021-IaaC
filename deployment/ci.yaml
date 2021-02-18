@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
 
-    - name: Wait for system to become reachable over SSH
+    - name: Wait for nodes to become reachable over SSH
       delegate_to: CML
       wait_for:
         timeout: 180
@@ -14,45 +14,49 @@
 - name: Basic configuration
   hosts: routers
   gather_facts: false
-  tasks:
+  roles: 
+    - basic-config
+    - acl
 
-    - name: Make sure ansible user is always in place
-      cisco.ios.ios_user:
-        name: ci-user
-        configured_password: "{{ lookup('env','VIRL2_NODES_PASS') }}"
-        password_type: secret
-        privilege: 15
-      no_log: true
 
-    - name: Configure domain name and nameservers
-      cisco.ios.ios_system:
-        domain_name: nsalab.org
-        domain_search: nsalab.org
-        name_servers:
-          - 8.8.8.8
-          - 8.8.4.4
 
-    - name: Configure host logging
-      cisco.ios.ios_logging:
-        aggregate:
-          - {dest: host, name: 172.16.0.1}
-          - {dest: host, name: 172.16.0.2}
-        facility: local7
-        level: informational
-        state: present
+#  tasks:
 
-    - name: Configure ntp synchronization
-      cisco.ios.ios_ntp:
-        server: 85.21.78.23
-        logging: false
-        state: present
+#    - name: Make sure ansible user is always in place
+#      cisco.ios.ios_user:
+#        name: ci-user
+#        configured_password: "{{ lookup('env','VIRL2_NODES_PASS') }}"
+#        password_type: secret
+#        privilege: 15
+#      no_log: true
 
-    - name: Set banner
-      cisco.ios.ios_banner:
-        banner: motd
-        text: |
-          THIS IS INFRASTRUCTURE AS A CODE DEMO
-          FOR IPD WEEK FEB 2021
-          !1!1UNAUTHORIZED ACCESS NOT ALLOWED!1!1
-        state: present
+#    - name: Configure nameservers
+#      cisco.ios.ios_system:
+#        domain_search: nsalab.org
+#        name_servers:
+#          - 8.8.8.8
+#          - 8.8.4.4
 
+#    - name: Configure host logging
+#      cisco.ios.ios_logging:
+#        aggregate:
+#          - {dest: host, name: 172.16.0.1}
+#          - {dest: host, name: 172.16.0.2}
+#        facility: local7
+#        level: informational
+#        state: present
+
+#    - name: Configure ntp synchronization
+#      cisco.ios.ios_ntp:
+#        server: 85.21.78.23
+#        logging: false
+#        state: present
+
+#    - name: Set banner
+#      cisco.ios.ios_banner:
+#        banner: motd
+#        text: |
+#          THIS IS INFRASTRUCTURE AS A CODE DEMO
+#          FOR IPD WEEK FEB 2021
+#          !1!1UNAUTHORIZED ACCESS NOT ALLOWED!1!1
+#        state: present

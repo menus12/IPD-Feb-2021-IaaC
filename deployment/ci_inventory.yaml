@@ -2,8 +2,10 @@ all:
   children:
     routers:
       hosts:
-        R1:
+        MOW-CSR-01:
           ansible_host: 10.0.191.101
+        MOW-CSR-02:
+          ansible_host: 10.0.191.102
     controllers:
       hosts:
         CML:

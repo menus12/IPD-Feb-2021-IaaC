@@ -2,7 +2,7 @@
 ansible_user: "{{ lookup('env','VIRL2_NODES_USER') }}"
 ansible_ssh_pass: "{{ lookup('env','VIRL2_NODES_PASS') }}"
 
-ansible_port: 2222
+ansible_port: 22
 ansible_network_os: ios
 ansible_connection: network_cli
 

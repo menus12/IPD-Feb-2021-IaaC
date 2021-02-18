@@ -1,0 +1,29 @@
+####  CONFIGURATION SPECIFIC ####
+hostname: MOW-CSR-02
+
+
+standard_acls:
+  ACL_FOR_NAT:
+    - permit 172.30.0.0 0.0.255.255
+
+
+default_route: 132.87.2.254
+
+l3_interfaces:
+  - interface_type: GigabitEthernet
+    interface_id: 1
+    description: Internet uplink
+    ipv4_address: 11.11.11.11/32
+    shutdown: false
+  - interface_type: GigabitEthernet
+    interface_id: 2
+    description: Fabric connection
+    ipv4_address: 20.17.5.2/30
+    shutdown: false
+  - interface_type: Tunnel
+    interface_id: 100
+    description: DMVPN
+    ipv6_address: 2001::11/64
+    source: Loopback101
+    mode: gre multipoint
+    shutdown: false
