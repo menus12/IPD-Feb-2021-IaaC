@@ -1,6 +1,12 @@
 ####  CONFIGURATION SPECIFIC ####
 hostname: MOW-RTR-01
 
+
+standard_acls:
+  ACL_FOR_NAT:
+    - permit 172.16.0.0 0.0.0.255
+
+
 default_route: 132.87.2.254
 
 l3_interfaces:
@@ -9,12 +15,14 @@ l3_interfaces:
     description: Internet uplink
     shutdown: false
     ipv4_address: 132.87.2.1/24
+    nat: outside
 
   - interface_type: GigabitEthernet
     interface_id: 2
     description: Internal network
     ipv4_address: 172.16.0.252/24
     shutdown: false
+    nat: inside
 
   - interface_type: Tunnel
     interface_id: 100
