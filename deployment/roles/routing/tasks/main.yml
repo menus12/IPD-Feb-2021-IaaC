@@ -1,0 +1,14 @@
+---
+# tasks file for routing
+
+#########################
+#FIX BUG IN /usr/lib/python2.7/dist-packages/ansible/plugins/filter/ipaddr.py
+
+#def _network_query(v):
+#    '''Return the network of a given IP or subnet'''
+#    if v.size >= 1:   <--------------- should be more or equial then 1, otherwise will not return network for /32 loopbacks
+#        return str(v.network)
+
+- name: Call routing instances config generator  
+  include_tasks: "{{ansible_network_os | lower}}.yaml"
+  when: ansible_network_os is defined

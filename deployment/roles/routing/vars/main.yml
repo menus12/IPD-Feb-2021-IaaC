@@ -1,0 +1,12 @@
+---
+# vars file for routing
+
+routing_instance:
+  - protocol: eigrp
+    area: 100 ##AS number
+    ipv4_networks: 
+      - on-premises-network
+      - AWS-network
+      - Azure-network
+      - GCP-network
+      - DMVPN-network

@@ -1,0 +1,12 @@
+---
+- name: Remove IP SLA configuration if any #ignore errors when sla config is not present
+  cisco.ios.ios_config: 
+    lines: 
+      - no ip sla {{item.id}}
+  loop: "{{ sla_instance | default([]) }}"
+  failed_when: false
+  no_log: True
+
+- name: Render a Jinja2 template for SLA and Track parameters onto an {{ ansible_network_os | upper }} device
+  cisco.ios.ios_config: 
+    src: "{{ansible_network_os | lower}}_ip-sla-tack_config.j2"

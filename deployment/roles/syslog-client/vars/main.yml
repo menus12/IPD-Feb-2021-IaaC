@@ -1,7 +1,0 @@
----
-# vars file for syslog-client
-
-logging_level: informational
-logging_hosts:
-  - host: 172.30.0.1
-  - host: 172.30.0.2

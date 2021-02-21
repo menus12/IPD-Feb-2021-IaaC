@@ -1,11 +1,19 @@
 all:
   children:
-    routers:
+    on_prem_routers:
       hosts:
-        MOW-CSR-01:
-          ansible_host: 10.0.191.101
-        MOW-CSR-02:
-          ansible_host: 10.0.191.102
+        MOW-RTR-01:
+          ansible_host: 10.0.191.201
+        MOW-RTR-02:
+          ansible_host: 10.0.191.202
+    cloud_routers:
+      hosts:
+        AWS-CSR-01:
+          ansible_host: 10.0.191.203
+        AZR-CSR-01:
+          ansible_host: 10.0.191.204
+        GCP-CSR-01:
+          ansible_host: 10.0.191.205
     controllers:
       hosts:
         CML:

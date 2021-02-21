@@ -1,0 +1,17 @@
+{% for instance in track_instance | d([]) %}
+{%- if instance.id is defined and instance.sla is defined and instance.type is defined -%}
+track {{instance.id}} ip sla {{instance.sla}} {{instance.type}}
+{% endif %}
+{% endfor %}
+{% for instance in sla_instance | d([]) %}
+{%- if instance.id is defined and instance.type is defined and instance.dest is defined and instance.source is defined -%}
+ip sla {{instance.id}} 
+ {{instance.type}} {{instance.dest}} source-interface {{instance.source}}
+{% endif %}
+{%- if instance.frequency is defined -%}
+  frequency {{instance.frequency}}
+{% endif %}
+{%- if instance.start is defined and instance.life is defined -%}
+ip sla schedule {{instance.id}} life {{instance.life}} start-time {{instance.start}}
+{% endif %}
+{% endfor %}

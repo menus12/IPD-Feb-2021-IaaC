@@ -15,6 +15,9 @@ interface {{item.interface_type}}{{item.interface_id}}
 {% if item.mode is defined %}
  tunnel mode {{item.mode}}
 {% endif %}
+{% if item.nat is defined and item.nat != None %}
+ ip nat {{item.nat}}
+{% endif %}
 {% if item.shutdown %}
  shutdown
 {% else %}

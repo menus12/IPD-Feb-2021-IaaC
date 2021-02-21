@@ -1,5 +1,0 @@
----
-- name: Render a Jinja2 template onto an {{ ansible_network_os | upper }} device
-  cisco.ios.ios_config: 
-    src: "{{ansible_network_os | lower}}_basic_config.j2"
-      

@@ -1,6 +1,6 @@
 ---
 - name: Warming up
-  hosts: routers
+  hosts: on_prem_routers:cloud_routers
   gather_facts: false
   tasks:
 
@@ -11,52 +11,88 @@
         host: "{{ ansible_host }}"
         port: "{{ ansible_port }}"
 
-- name: Basic configuration
-  hosts: routers
+- name: Initial configuration
+  hosts: on_prem_routers:cloud_routers
   gather_facts: false
   roles: 
-    - basic-config
+    - routed-ports
     - acl
+    - fhrp
+    - ip-sla-track
+  tasks:
+    - name: Speed up HSRP timers and track WAN reachability
+      ios_config:
+        lines: 
+          - standby 100 timers 1 3
+          - standby 100 track 1 shutdown
+          - standby 100 preempt
+        parents: interface GigabitEthernet2
+      when: inventory_hostname in groups['on_prem_routers']
 
+- name: Configure NAT
+  hosts: on_prem_routers
+  gather_facts: false
+  tasks:
+    - name: Configure NAT statement
+      ios_config:
+        lines: ip nat inside source list ACL_FOR_NAT interface GigabitEthernet1 overload
 
+- name: Configure DMVPN hubs
+  hosts: on_prem_routers
+  gather_facts: false
+  tasks:    
+    - name: Common configuration for both hubs
+      ios_config:
+        lines:
+          - ip nhrp authentication DMVPN
+          - ip nhrp map multicast dynamic 
+          - ip nhrp network-id 1
+          - tunnel source GigabitEthernet1
+          - tunnel mode gre multipoint
+          - ip nhrp redirect
+        parents: interface Tunnel100
 
-#  tasks:
+- name: Configure DMVPN spoke-hub
+  hosts: MOW-RTR-02
+  gather_facts: false
+  tasks:    
+    - name: Add configuration to second hub
+      ios_config:
+        lines:
+          - ip nhrp map 192.168.100.1 132.87.2.1
+          - ip nhrp map multicast 132.87.2.1
+          - ip nhrp nhs 192.168.100.1
+        parents: interface Tunnel100
 
-#    - name: Make sure ansible user is always in place
-#      cisco.ios.ios_user:
-#        name: ci-user
-#        configured_password: "{{ lookup('env','VIRL2_NODES_PASS') }}"
-#        password_type: secret
-#        privilege: 15
-#      no_log: true
+- name: Configure DMVPN spokes
+  hosts: cloud_routers
+  gather_facts: false
+  tasks:    
+    - name: Add configuration to spoke tunnels
+      ios_config:
+        lines:
+          - ip nhrp authentication DMVPN
+          - ip nhrp map 192.168.100.1 132.87.2.1
+          - ip nhrp map 192.168.100.2 100.71.60.1
+          - ip nhrp map multicast 132.87.2.1
+          - ip nhrp map multicast 100.71.60.1
+          - ip nhrp network-id 1
+          - ip nhrp nhs 192.168.100.1
+          - ip nhrp nhs 192.168.100.2
+          - tunnel source GigabitEthernet1
+          - tunnel mode gre multipoint
+          - ip nhrp shortcut
+        parents: interface Tunnel100
 
-#    - name: Configure nameservers
-#      cisco.ios.ios_system:
-#        domain_search: nsalab.org
-#        name_servers:
-#          - 8.8.8.8
-#          - 8.8.4.4
-
-#    - name: Configure host logging
-#      cisco.ios.ios_logging:
-#        aggregate:
-#          - {dest: host, name: 172.16.0.1}
-#          - {dest: host, name: 172.16.0.2}
-#        facility: local7
-#        level: informational
-#        state: present
-
-#    - name: Configure ntp synchronization
-#      cisco.ios.ios_ntp:
-#        server: 85.21.78.23
-#        logging: false
-#        state: present
-
-#    - name: Set banner
-#      cisco.ios.ios_banner:
-#        banner: motd
-#        text: |
-#          THIS IS INFRASTRUCTURE AS A CODE DEMO
-#          FOR IPD WEEK FEB 2021
-#          !1!1UNAUTHORIZED ACCESS NOT ALLOWED!1!1
-#        state: present
+- name: Routing configuration
+  hosts: on_prem_routers:cloud_routers
+  gather_facts: false
+  roles: 
+    - routing
+  tasks:
+    - name: Remove split-horizon on hubs to make EIGRP work over DMVPN
+      ios_config:
+        lines:
+          - no ip split-horizon eigrp 100
+        parents: interface Tunnel100
+      when: inventory_hostname in groups['on_prem_routers']

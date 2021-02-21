@@ -1,0 +1,9 @@
+---
+# vars file for fhrp
+
+fhrp_instance:
+  - protocol: standby #HSRP
+    group: 100
+    ipv4_networks: 
+      - on-premises-network
+    ipv4_vip: 172.16.0.254

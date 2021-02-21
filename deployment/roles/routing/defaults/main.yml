@@ -1,0 +1,4 @@
+---
+# defaults file for routing
+
+ospf_process_id: 1

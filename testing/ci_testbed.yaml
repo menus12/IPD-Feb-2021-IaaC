@@ -1,5 +1,5 @@
 testbed:
-  name: ci_testbed
+  name: dev_testbed
   credentials:
     default:
       username: '%ENV{VIRL2_NODES_USER}'
@@ -19,12 +19,12 @@ devices:
         protocol: ssh
         ip: '%ENV{VIRL2_CONTROLLER_HOST}'
         port: '%ENV{VIRL2_CONTROLLER_PORT}'
-  R1:
+  MOW-RTR-01:
     connections:
       ssh:
         protocol: ssh
-        ip: 10.0.191.101
-        port: 2222
+        ip: 10.0.191.201
+        port: 22
         proxy: cml
         ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
       defaults:
@@ -32,11 +32,94 @@ devices:
     os: ios
     platform: iosv
     type: router
-
-
-topology:
-  R1:
-    interfaces:
-      GigabitEthernet0/0:
-        link: l0
-        type: ethernet
+  MOW-RTR-02:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.202
+        port: 22
+        proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
+  AWS-CSR-01:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.203
+        port: 22
+        proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
+  AZR-CSR-01:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.204
+        port: 22
+        proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
+  GCP-CSR-01:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.205
+        port: 22
+        proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
+  INTERNAL-HOST-01:
+    credentials:
+      default:
+        username: cisco
+        password: cisco
+    connections:
+      ssh:
+        command: 'ssh -l cisco 172.16.0.101'
+        proxy: MOW-RTR-01
+      defaults:
+        class: unicon.Unicon
+    os: linux
+    type: linux
+  INTERNAL-HOST-02:
+    credentials:
+      default:
+        username: cisco
+        password: cisco
+    connections:
+      ssh:
+        command: 'ssh -l cisco 172.16.0.102'
+        proxy: MOW-RTR-02
+      defaults:
+        class: unicon.Unicon
+    os: linux
+    type: linux
+  ISP:
+    connections:
+      ssh:
+        protocol: ssh
+        ip: 10.0.191.207
+        port: 22
+        proxy: cml
+        ssh_options: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      defaults:
+        class: unicon.Unicon
+    os: ios
+    platform: iosv
+    type: router
