@@ -58,7 +58,7 @@ jobs:
         run: |
           source iaac-venv/bin/activate
           cd ./testing
-          pyats run job job.py
+          pyats run job ci_task.py
       
       - name: Stop CML simulation
         run: |

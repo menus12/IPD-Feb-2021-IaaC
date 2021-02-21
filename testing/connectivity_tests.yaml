@@ -18,15 +18,15 @@ testcases:
       connectivity_from_clouds_to_on-premises_network:
         - desc: AWS network <-> internal network
           device: AWS-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: Azure network <-> internal network
           device: AZR-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: GCP network <-> internal network
           device: GCP-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
     cleanup_steps:
 
@@ -41,15 +41,15 @@ testcases:
             - shutdown
         - desc: AWS network <-> internal network
           device: AWS-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: Azure network <-> internal network
           device: AZR-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: GCP network <-> internal network
           device: GCP-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
     cleanup_steps:
       - desc: bring back Gi0/1 on ISP
@@ -69,15 +69,15 @@ testcases:
             - shutdown
         - desc: AWS network <-> internal network
           device: AWS-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: Azure network <-> internal network
           device: AZR-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: GCP network <-> internal network
           device: GCP-CSR-01
-          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
           assert_value: "!!!"
     cleanup_steps:
       - desc: bring back Gi0/2 on ISP
