@@ -27,7 +27,7 @@ if args.passwd == None:
 if args.action == None:
     args.action = 'create'
 if args.topology == None:
-    args.topology = './cml_ci_topology'
+    args.topology = './cml_ci_topology.yaml'
 
 if args.url == None or args.user == None or args.passwd == None:
     print (parser.print_help())
