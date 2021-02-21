@@ -1,0 +1,87 @@
+testcases:
+  Connectivity_during_normal_operation:
+    name: End-to-end connectivity tests
+    tests:
+      connectvity_between_clouds:
+        - desc: AWS network <-> GCP network
+          device: AWS-CSR-01
+          exec_command: ping 10.10.30.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> AWS network
+          device: AZR-CSR-01
+          exec_command: ping 10.10.10.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> Azure network  
+          device: GCP-CSR-01
+          exec_command: ping 10.10.20.254 source lo0 repeat 20
+          assert_value: "!!!"
+      connectivity_from_clouds_to_on-premises_network:
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+    cleanup_steps:
+
+  Connectivity_during_ISP01_failover:
+    name: Failover scenario #1
+    tests:   
+      dmvpn_failover_when_isp-01_is_down:
+        - desc: shutdoown Gi0/1 on ISP
+          device: ISP
+          config_command: 
+            - interface Gi0/1
+            - shutdown
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+    cleanup_steps:
+      - desc: bring back Gi0/1 on ISP
+        device: ISP
+        config_command: 
+          - interface Gi0/1
+          - no shutdown
+
+  Connectivity_during_ISP02_failover:
+    name: Failover scenario #2
+    tests:   
+      dmvpn_failover_when_isp-02_is_down:
+        - desc: shutdoown Gi0/2 on ISP
+          device: ISP
+          config_command: 
+            - interface Gi0/2
+            - shutdown
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.254 source lo0 repeat 20
+          assert_value: "!!!"
+    cleanup_steps:
+      - desc: bring back Gi0/2 on ISP
+        device: ISP
+        config_command: 
+          - interface Gi0/2
+          - no shutdown

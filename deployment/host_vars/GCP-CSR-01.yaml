@@ -1,0 +1,25 @@
+####  CONFIGURATION SPECIFIC ####
+hostname: AWS-CSR-01
+
+default_route: 94.121.72.2
+
+l3_interfaces:
+  - interface_type: GigabitEthernet
+    interface_id: 1
+    description: Internet uplink
+    shutdown: false
+    ipv4_address: 94.121.72.1/30
+
+  - interface_type: Loopback
+    interface_id: 0
+    description: GCP network
+    ipv4_address: 10.10.30.254/24
+    shutdown: false
+
+  - interface_type: Tunnel
+    interface_id: 100
+    description: DMVPN
+    ipv4_address: 192.168.100.5/24
+    source: GigabitEthernet1
+    mode: gre multipoint
+    shutdown: false

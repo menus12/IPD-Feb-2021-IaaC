@@ -1,0 +1,9 @@
+---
+# vars file for routing-topology
+
+ipv4_networks:
+  on-premises-network: 172.16.0.0/24
+  AWS-network: 10.10.10.0/24
+  Azure-network: 10.10.20.0/24
+  GCP-network: 10.10.30.0/24
+  DMVPN-network: 192.168.100.0/24

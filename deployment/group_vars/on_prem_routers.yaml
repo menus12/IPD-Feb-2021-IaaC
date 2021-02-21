@@ -2,10 +2,24 @@
 ansible_user: "{{ lookup('env','VIRL2_NODES_USER') }}"
 ansible_ssh_pass: "{{ lookup('env','VIRL2_NODES_PASS') }}"
 
-ansible_port: 2222
+ansible_port: 22
 ansible_network_os: ios
 ansible_connection: network_cli
 
 ansible_ssh_common_args: "{{ lookup('env','ANSIBLE_PROXY_COMMAND') }}"
 
 ####  CONFIGURATION SPECIFIC ####
+
+sla_instance:
+  - id: 1
+    type: icmp-echo
+    dest: 8.8.8.8
+    source: GigabitEthernet2
+    frequency: 5
+    start: now
+    life: forever
+
+track_instance:
+  - id: 1
+    sla: 1
+    type: reachability

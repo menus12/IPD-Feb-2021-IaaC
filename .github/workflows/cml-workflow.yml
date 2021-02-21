@@ -1,8 +1,6 @@
-name: test-ci
+name: cml-workflow
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -23,19 +21,13 @@ env:
   #ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
 
 jobs:
-  ci:
+  ci-demo:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:      
       - uses: actions/checkout@v2
   
-#      - name: test proxy
-#        run: |
-#          export ANSIBLE_PROXY_COMMAND="-o StrictHostKeyChecking=no -o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
-#          echo $ANSIBLE_PROXY_COMMAND > ap.txt
-#          cat ap.txt
-
       - name: Set up a python virtual environment
         run: | 
           python3 -m venv iaac-venv
@@ -49,15 +41,6 @@ jobs:
           pip3 install ansible
           ansible-galaxy collection install cisco.ios
           pip3 install pyats[full]
-
-#      - name: Check virtual environment
-#        run: |
-#          source iaac-venv/bin/activate
-#          env | grep VIRL2
-#          env | grep ANSIBLE
-#          ansible --version
-#          pyats version check
-#          pwd
           
       - name: Start CML simulation
         run: |
@@ -75,10 +58,10 @@ jobs:
         run: |
           source iaac-venv/bin/activate
           cd ./testing
-          python3 test.py --testbed ci_testbed.yaml --datafile test_data.yaml
-        #working-directory: testing
+          pyats run job ci_task.py
       
       - name: Stop CML simulation
         run: |
           source iaac-venv/bin/activate
           python3 cml_wrapper.py --action destroy
+        if: ${{ always() }}

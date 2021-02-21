@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(description='CI test CML wrapper')
 parser.add_argument('--url', type=str, help='CML host URL (default from env)')
 parser.add_argument('--user', type=str, help='CML username (default from env)')
 parser.add_argument('--passwd', type=str, help='CML password (default from env)')
-parser.add_argument('--topology', type=str, help='CML topology pass (default is ./cml-topology.yaml)')
+parser.add_argument('--topology', type=str, help='CML topology pass (default is ./cml_ci_topology.yaml)')
 parser.add_argument('--action', type=str, help='create or destroy (default create)')
 args = parser.parse_args()
 
@@ -27,7 +27,7 @@ if args.passwd == None:
 if args.action == None:
     args.action = 'create'
 if args.topology == None:
-    args.topology = './cml-topology.yaml'
+    args.topology = './cml_ci_topology.yaml'
 
 if args.url == None or args.user == None or args.passwd == None:
     print (parser.print_help())
