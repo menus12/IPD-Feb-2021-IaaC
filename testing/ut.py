@@ -30,18 +30,11 @@ def process_steps(test_steps, testbed, steps):
                 var = testbed.devices[step['device']].execute(step['exec_command'])                
             if 'assert_value' in step.keys():
                 assert step['assert_value'] in var
-            if 'assert_not' in step.keys():
-                assert step['assert_not'] not in var
             if 'config_command' in step.keys():
                 testbed.devices[step['device']].configure(step['config_command'])
-            if 'parse_command' in step.keys():
-                var = testbed.devices[step['device']].parse(step['parse_command'])
-            if 'assert_function' in step.keys():
-                func = globals()[step['assert_function']] 
-                func(step['reference_var'], var)
 
-# abstract testcase class which will be inherited by actual testcases in data file
-class CommonTestcase():
+# testcase classes which will take data from datafile
+class Connectivity_during_normal_operation(aetest.Testcase):
 
     @aetest.setup
     def setup(self):
@@ -55,24 +48,35 @@ class CommonTestcase():
     @aetest.cleanup
     def cleanup(self, testbed, steps):
         process_steps(test_steps = self.cleanup_steps, testbed = testbed, steps=steps)
-
-# empty testcase named in convention with datafile
-class Connectivity_during_normal_operation(aetest.Testcase, CommonTestcase):
-    pass
-class Connectivity_during_ISP01_failover(aetest.Testcase, CommonTestcase):
-    pass
-class Connectivity_during_ISP02_failover(aetest.Testcase, CommonTestcase):
-    pass
-
-if __name__ == '__main__':
-    import argparse
-    import yaml
-    from genie import testbed    
+        
+class Connectivity_during_ISP01_failover(aetest.Testcase):
     
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--testbed', dest = 'testbed', type = testbed.load)
-    parser.add_argument('--datafile', dest = 'datafile', type = yaml.safe_load)
+    @aetest.setup
+    def setup(self):
+        aetest.loop.mark(self.test, uids=list(self.tests))
+        aetest.skipIf.affix(self.cleanup, self.cleanup_steps is None, 'no cleanup steps specified')
 
-    args, unknown = parser.parse_known_args()
+    @aetest.test
+    def test(self, testbed, steps, section):
+        process_steps(test_steps = self.tests[section.uid], testbed = testbed, steps=steps)
+        
+    @aetest.cleanup
+    def cleanup(self, testbed, steps):
+        process_steps(test_steps = self.cleanup_steps, testbed = testbed, steps=steps)
 
-    aetest.main(**vars(args))
+class Connectivity_during_ISP02_failover(aetest.Testcase):
+    
+    @aetest.setup
+    def setup(self):
+        aetest.loop.mark(self.test, uids=list(self.tests))
+        aetest.skipIf.affix(self.cleanup, self.cleanup_steps is None, 'no cleanup steps specified')
+
+    @aetest.test
+    def test(self, testbed, steps, section):
+        process_steps(test_steps = self.tests[section.uid], testbed = testbed, steps=steps)
+        
+    @aetest.cleanup
+    def cleanup(self, testbed, steps):
+        process_steps(test_steps = self.cleanup_steps, testbed = testbed, steps=steps)
+
+

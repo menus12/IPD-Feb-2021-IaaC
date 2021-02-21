@@ -16,7 +16,6 @@
   gather_facts: false
   roles: 
     - routed-ports
-    - acl
     - fhrp
     - ip-sla-track
   tasks:
@@ -28,14 +27,6 @@
           - standby 100 preempt
         parents: interface GigabitEthernet2
       when: inventory_hostname in groups['on_prem_routers']
-
-- name: Configure NAT
-  hosts: on_prem_routers
-  gather_facts: false
-  tasks:
-    - name: Configure NAT statement
-      ios_config:
-        lines: ip nat inside source list ACL_FOR_NAT interface GigabitEthernet1 overload
 
 - name: Configure DMVPN hubs
   hosts: on_prem_routers

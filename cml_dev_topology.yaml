@@ -39,7 +39,7 @@ nodes:
        ip nat inside
       !
       interface GigabitEthernet0/0
-       ip address 10.0.191.200 255.255.255.0
+       ip address 10.0.191.100 255.255.255.0
        ip nat outside
        no shutdown
 
@@ -68,12 +68,12 @@ nodes:
        ip nat inside
        no shutdown
 
-      ip nat inside source static 132.87.2.1 10.0.191.201
-      ip nat inside source static 100.71.60.1 10.0.191.202
-      ip nat inside source static 100.10.9.5 10.0.191.203
-      ip nat inside source static 18.31.192.1 10.0.191.204
-      ip nat inside source static 94.121.72.1 10.0.191.205
-      ip nat inside source static 8.8.8.8 10.0.191.207
+      ip nat inside source static 132.87.2.1 10.0.191.101
+      ip nat inside source static 100.71.60.1 10.0.191.102
+      ip nat inside source static 100.10.9.5 10.0.191.103
+      ip nat inside source static 18.31.192.1 10.0.191.104
+      ip nat inside source static 94.121.72.1 10.0.191.105
+      ip nat inside source static 8.8.8.8 10.0.191.107
 
       line vty 0 15
        login local

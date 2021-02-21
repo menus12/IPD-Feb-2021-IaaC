@@ -5,33 +5,29 @@ testcases:
       connectvity_between_clouds:
         - desc: AWS network <-> GCP network
           device: AWS-CSR-01
-          exec_command: ping 10.10.30.254
+          exec_command: ping 10.10.30.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: Azure network <-> AWS network
           device: AZR-CSR-01
-          exec_command: ping 10.10.10.254
+          exec_command: ping 10.10.10.254 source lo0 repeat 20
           assert_value: "!!!"
         - desc: GCP network <-> Azure network  
           device: GCP-CSR-01
-          exec_command: ping 10.10.20.254
+          exec_command: ping 10.10.20.254 source lo0 repeat 20
           assert_value: "!!!"
-      connectivity_from_on-premises_network:
-        - desc: internal network <-> internet
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 20 8.8.8.8
-          assert_not: "100% packet loss"
-        - desc: internal network <-> AWS network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 20 10.10.10.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> Azure network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 20 10.10.20.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> GCP network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 20 10.10.30.254
-          assert_not: "100% packet loss"
+      connectivity_from_clouds_to_on-premises_network:
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
     cleanup_steps:
 
   Connectivity_during_ISP01_failover:
@@ -43,22 +39,18 @@ testcases:
           config_command: 
             - interface Gi0/1
             - shutdown
-        - desc: internal network <-> internet
-          device: INTERNAL-HOST-02
-          exec_command: ping -A -q -c 40 8.8.8.8
-          assert_not: "100% packet loss"
-        - desc: internal network <-> AWS network
-          device: INTERNAL-HOST-02
-          exec_command: ping -A -q -c 40 10.10.10.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> Azure network
-          device: INTERNAL-HOST-02
-          exec_command: ping -A -q -c 40 10.10.20.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> GCP network
-          device: INTERNAL-HOST-02
-          exec_command: ping -A -q -c 40 10.10.30.254
-          assert_not: "100% packet loss"
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
     cleanup_steps:
       - desc: bring back Gi0/1 on ISP
         device: ISP
@@ -75,22 +67,18 @@ testcases:
           config_command: 
             - interface Gi0/2
             - shutdown
-        - desc: internal network <-> internet
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 40 8.8.8.8
-          assert_not: "100% packet loss"
-        - desc: internal network <-> AWS network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 40 10.10.10.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> Azure network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 40 10.10.20.254
-          assert_not: "100% packet loss"
-        - desc: internal network <-> GCP network
-          device: INTERNAL-HOST-01
-          exec_command: ping -A -q -c 40 10.10.30.254
-          assert_not: "100% packet loss"
+        - desc: AWS network <-> internal network
+          device: AWS-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: Azure network <-> internal network
+          device: AZR-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
+        - desc: GCP network <-> internal network
+          device: GCP-CSR-01
+          exec_command: ping 172.16.0.101 source lo0 repeat 20
+          assert_value: "!!!"
     cleanup_steps:
       - desc: bring back Gi0/2 on ISP
         device: ISP
