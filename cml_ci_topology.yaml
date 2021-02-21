@@ -84,6 +84,7 @@ nodes:
       !
       end
     image_definition: iosv-159-3
+    ram: 1024
     tags: []
     interfaces:
       - id: i0
