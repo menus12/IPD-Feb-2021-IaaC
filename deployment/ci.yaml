@@ -96,3 +96,16 @@
           - no ip split-horizon eigrp 100
         parents: interface Tunnel100
       when: inventory_hostname in groups['on_prem_routers']
+
+- name: Banner configuration
+  hosts: on_prem_routers:cloud_routers
+  gather_facts: false
+  tasks:
+    - name: Add MOTD banner
+      cisco.ios.ios_banner:
+        banner: motd
+        text: |
+          THIS IS INFRASTRUCTURE AS A CODE DEMO
+          FOR IPD WEEK FEB 2021
+          !!!!UNAUTHORIZED ACCESS NOT ALLOWED!!!!
+        state: present
