@@ -1,0 +1,18 @@
+testcases:
+  Banner_check:
+    name: End-to-end connectivity tests
+    tests:
+      MOTD:
+        - desc: MOTD banner on AWS-CSR-01
+          device: AWS-CSR-01
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+        - desc: MOTD banner on AZR-CSR-01
+          device: AZR-CSR-01
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+        - desc: MOTD banner on GCP-CSR-01
+          device: GCP-CSR-01
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+    cleanup_steps:

@@ -7,3 +7,4 @@ import yaml
 def main(runtime):
     
     run(testscript = './ut.py', testbed=testbed.load(os.path.join('./ci_testbed.yaml')), datafile=yaml.safe_load('./connectivity_tests.yaml'))
+    run(testscript = './ut.py', testbed=testbed.load(os.path.join('./ci_testbed.yaml')), datafile=yaml.safe_load('./sanity_tests.yaml'))

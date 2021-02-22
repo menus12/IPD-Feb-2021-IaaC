@@ -79,4 +79,17 @@ class Connectivity_during_ISP02_failover(aetest.Testcase):
     def cleanup(self, testbed, steps):
         process_steps(test_steps = self.cleanup_steps, testbed = testbed, steps=steps)
 
+class Banner_check(aetest.Testcase):
+    
+    @aetest.setup
+    def setup(self):
+        aetest.loop.mark(self.test, uids=list(self.tests))
+        aetest.skipIf.affix(self.cleanup, self.cleanup_steps is None, 'no cleanup steps specified')
 
+    @aetest.test
+    def test(self, testbed, steps, section):
+        process_steps(test_steps = self.tests[section.uid], testbed = testbed, steps=steps)
+        
+    @aetest.cleanup
+    def cleanup(self, testbed, steps):
+        process_steps(test_steps = self.cleanup_steps, testbed = testbed, steps=steps)
