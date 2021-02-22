@@ -87,7 +87,7 @@ testcases:
           - no shutdown
   
   Banner_check:
-    name: End-to-end connectivity tests
+    name: Check related to device banners
     tests:
       MOTD:
         - desc: MOTD banner on AWS-CSR-01
@@ -102,4 +102,12 @@ testcases:
           device: GCP-CSR-01
           exec_command: show banner motd
           assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+        - desc: MOTD banner on MOW-RTR-01
+          device: MOW-RTR-01
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+        - desc: MOTD banner on MOW-RTR-02
+          device: MOW-RTR-02
+          exec_command: show banner motd
+          assert_value: UNAUTHORIZED ACCESS NOT ALLOWED          
     cleanup_steps:
