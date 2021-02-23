@@ -1,0 +1,56 @@
+name: cml-workflow
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  VIRL2_URL: ${{ secrets.VIRL2_URL }}
+  VIRL2_USER: ${{ secrets.VIRL2_USER }}
+  VIRL2_PASS: ${{ secrets.VIRL2_PASS }}
+  
+  VIRL2_NODES_USER: ${{ secrets.VIRL2_NODES_USER }}
+  VIRL2_NODES_PASS: ${{ secrets.VIRL2_NODES_PASS }}
+  VIRL2_NODES_BECOME: ${{ secrets.VIRL2_NODES_BECOME }}
+  
+  VIRL2_CONTROLLER_USER: ${{ secrets.VIRL2_CONTROLLER_USER }}
+  VIRL2_CONTROLLER_PASS: ${{ secrets.VIRL2_CONTROLLER_PASS }}
+  VIRL2_CONTROLLER_HOST: ${{ secrets.VIRL2_CONTROLLER_HOST }}
+  VIRL2_CONTROLLER_PORT: ${{ secrets.VIRL2_CONTROLLER_PORT }}
+  
+  #ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
+
+jobs:
+  ci-demo:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:      
+      - uses: actions/checkout@v2
+  
+      - name: Set up a python virtual environment
+        run: | 
+          python3 -m venv iaac-venv
+          source iaac-venv/bin/activate
+          python3 -m pip install --upgrade pip
+          sudo apt-get install python3-setuptools
+          pip3 install wheel
+          pip3 install virl2_client          
+          pip3 install paramiko
+          pip3 install nested-lookup
+          pip3 install ansible
+          ansible-galaxy collection install cisco.ios
+          pip3 install pyats[full]
+          
+      - name: Deploy ansible playbook
+        run: |
+          source iaac-venv/bin/activate
+          export ANSIBLE_PROXY_COMMAND="-o ProxyCommand='sshpass -p $VIRL2_CONTROLLER_PASS ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -q $VIRL2_CONTROLLER_USER@$VIRL2_CONTROLLER_HOST -p $VIRL2_CONTROLLER_PORT'"
+          cd ./deployment
+          ansible-playbook -i dev_inventory.yaml ci.yaml
+    
+      - name: Run pyATS unit-tests 
+        run: |
+          source iaac-venv/bin/activate
+          cd ./testing
+          pyats run job dev_task.py
