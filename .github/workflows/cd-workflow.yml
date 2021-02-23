@@ -1,4 +1,4 @@
-name: cml-workflow
+name: cd-workflow
 
 on:
   push:
