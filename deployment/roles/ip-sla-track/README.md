@@ -1,4 +1,4 @@
-syslog-client
+ip-sla-tack
 =========
 
 This role is used for SLA and track configuration on IOS
@@ -12,18 +12,27 @@ Role Variables
 --------------
 
 Variables used in host_vars:
-- logging_level
-- logging_hosts - list of dicts with following parameters
-  - host
-  - interface - interface for ASA devices
+sla_instance:
+  - id: 
+    type: 
+    dest: 
+    source: 
+    frequency: 
+    start: 
+    life: 
+
+track_instance:
+  - id: 
+    sla: 
+    type: 
 
 
 Example Playbook
 ----------------
 
-    - hosts: HQ1:FW1
+    - hosts: routers
       roles:
-         - syslog-client
+         - ip-sla-tack
 
 License
 -------
