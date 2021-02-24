@@ -110,4 +110,25 @@ testcases:
           device: MOW-RTR-02
           exec_command: show banner motd
           assert_value: UNAUTHORIZED ACCESS NOT ALLOWED
+      LOGIN:
+        - desc: Login banner on AWS-CSR-01
+          device: AWS-CSR-01
+          exec_command: show banner login
+          assert_value: YOU SHALL NOT PASS
+        - desc: Login banner on AZR-CSR-01
+          device: AZR-CSR-01
+          exec_command: show banner login
+          assert_value: YOU SHALL NOT PASS
+        - desc: Login banner on GCP-CSR-01
+          device: GCP-CSR-01
+          exec_command: show banner login
+          assert_value: YOU SHALL NOT PASS
+        - desc: Login banner on MOW-RTR-01
+          device: MOW-RTR-01
+          exec_command: show banner login
+          assert_value: YOU SHALL NOT PASS
+        - desc: Login banner on MOW-RTR-02
+          device: MOW-RTR-02
+          exec_command: show banner login
+          assert_value: YOU SHALL NOT PASS
     cleanup_steps:
