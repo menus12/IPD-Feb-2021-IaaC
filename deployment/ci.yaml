@@ -115,4 +115,4 @@
         text: |
           YOU SHALL NOT PASS
           FOR NETACAD INSTRUCTORS ONLY
-        state: present
+        state: absent
