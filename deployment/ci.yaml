@@ -109,3 +109,10 @@
           FOR IPD WEEK FEB 2021
           !!!!UNAUTHORIZED ACCESS NOT ALLOWED!!!!
         state: present
+    - name: Remove login banner
+      cisco.ios.ios_banner:
+        banner: login
+        text: |
+          YOU SHALL NOT PASS
+          FOR NETACAD INSTRUCTORS ONLY
+        state: absent
