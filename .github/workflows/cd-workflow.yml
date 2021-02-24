@@ -21,7 +21,7 @@ env:
   #ANSIBLE_PROXY_COMMAND: ${{ secrets.ANSIBLE_PROXY_COMMAND }}
 
 jobs:
-  ci-demo:
+  cd-demo:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
